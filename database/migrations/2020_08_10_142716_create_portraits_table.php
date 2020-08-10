@@ -19,7 +19,7 @@ class CreatePortraitsTable extends Migration
 
             $table->string('sku')->unique();
             $table->string('slug');
-            $table->unsignedInteger('qty')->default(10);
+            $table->unsignedInteger('quantity')->default(10);
 
             $table->decimal('price', 12, 4)->nullable();
 
@@ -29,7 +29,10 @@ class CreatePortraitsTable extends Migration
             $table->string('thumbnail')->nullable();
             $table->text('description')->nullable();
 
+            $table->boolean('status')->default(1);
+
             $table->foreignId('category_id')->references('id')->on('categories')->onDelete('cascade');
+            $table->foreignId('user_id')->references('id')->on('users');
 
             $table->softDeletes();
             $table->timestamps();

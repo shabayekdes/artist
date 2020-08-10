@@ -14,6 +14,20 @@ class PortraitResource extends JsonResource
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        return [
+            "id" => $this->id,
+            "name" => $this->id,
+            "sku" => $this->id,
+            "slug" => $this->id,
+            "quantity" => $this->id,
+            "price" => $this->id,
+            "featured" => $this->id,
+            "new" => $this->id,
+            "thumbnail" => $this->id,
+            "description" => $this->id,
+            "status" => $this->id,
+            "category_id" => $this->id,
+            "user_id" => $this->id
+        ];
     }
 }

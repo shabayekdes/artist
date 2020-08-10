@@ -34,4 +34,12 @@ class Portrait extends Model
     {
         return $query->where('featured', true);
     }
+
+    /**
+     * Get the user that owns the phone.
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }
