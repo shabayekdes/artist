@@ -16,18 +16,18 @@ class PortraitResource extends JsonResource
     {
         return [
             "id" => $this->id,
-            "name" => $this->id,
-            "sku" => $this->id,
-            "slug" => $this->id,
-            "quantity" => $this->id,
-            "price" => $this->id,
-            "featured" => $this->id,
-            "new" => $this->id,
-            "thumbnail" => $this->id,
-            "description" => $this->id,
-            "status" => $this->id,
-            "category_id" => $this->id,
-            "user_id" => $this->id
+            "name" => $this->name,
+            "sku" => $this->sku,
+            "slug" => $this->slug,
+            "quantity" => $this->quantity,
+            "price" => $this->price,
+            "featured" => $this->featured,
+            "new" => $this->new,
+            "thumbnail" => url( '/' . $this->thumbnail),
+            "description" => $this->description,
+            "status" => $this->status,
+            "category_id" => $this->category,
+            "user_id" => $this->user
         ];
     }
 }

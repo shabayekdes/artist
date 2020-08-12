@@ -36,10 +36,18 @@ class Portrait extends Model
     }
 
     /**
-     * Get the user that owns the phone.
+     * Get the user that owns the portrait.
      */
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * Get the user that owns the category.
+     */
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
     }
 }
