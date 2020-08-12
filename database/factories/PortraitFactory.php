@@ -15,6 +15,7 @@ $factory->define(Portrait::class, function (Faker $faker) {
         'category_id' => $faker->numberBetween(1, 5),
         'user_id' => $faker->numberBetween(1, 10),
         'featured' => $faker->boolean(),
-        'new' => $faker->boolean()
+        'new' => $faker->boolean(),
+        'thumbnail' => 'images/img-placeholder.png'
     ];
 });

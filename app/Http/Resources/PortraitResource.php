@@ -23,7 +23,7 @@ class PortraitResource extends JsonResource
             "price" => $this->price,
             "featured" => $this->featured,
             "new" => $this->new,
-            "thumbnail" => url( '/' . $this->thumbnail),
+            "thumbnail" => url($this->thumbnail),
             "description" => $this->description,
             "status" => $this->status,
             "category_id" => $this->category,
