@@ -17,5 +17,7 @@ Route::get('home', 'HomeController@index');
 Route::get('categories', 'CategoryController@index');
 Route::get('categories/{category}', 'CategoryController@show');
 Route::get('portraits/{portrait}', 'PortraitController@show');
+Route::resource('artists', 'ArtistController');
+
 
 Route::get('login', 'AuthController@login');
