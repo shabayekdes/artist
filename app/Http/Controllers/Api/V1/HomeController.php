@@ -9,6 +9,7 @@ use App\Models\Portrait;
 
 class HomeController extends Controller
 {
+    
     /**
      * Display a listing of the resource.
      *

@@ -38,7 +38,7 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-        /**
+    /**
      * Find the user instance for the given username.
      *
      * @param  string  $username
@@ -47,5 +47,10 @@ class User extends Authenticatable
     public function findForPassport($phone)
     {
         return $this->where('phone', $phone)->first();
+    }
+
+    public function addresses()
+    {
+        return $this->hasMany(UserAddress::class);
     }
 }

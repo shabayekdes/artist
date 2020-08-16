@@ -13,11 +13,20 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+
+
 Route::get('home', 'HomeController@index');
 Route::get('categories', 'CategoryController@index');
 Route::get('categories/{category}', 'CategoryController@show');
 Route::get('portraits/{portrait}', 'PortraitController@show');
 Route::resource('artists', 'ArtistController');
+
+
+Route::middleware('auth:api')->group(function () {
+
+    Route::resource('user-address', 'UserAddressController');
+
+});
 
 
 Route::get('login', 'AuthController@login');
