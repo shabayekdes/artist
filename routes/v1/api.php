@@ -25,6 +25,8 @@ Route::resource('artists', 'ArtistController');
 Route::middleware('auth:api')->group(function () {
 
     Route::resource('user-address', 'UserAddressController');
+    Route::resource('checkout', 'CheckoutController');
+
 
 });
 
