@@ -38,7 +38,13 @@ trait TokensManagerTrait {
      * @return mixed
      */
     private function addClient($request, $grantType){
-        $client = Client::all()->where('password_client' , true)->first();
+
+        $client = Client::where('password_client' , true)->first();
+
+        if(!$client){
+            return response()->json(['status' => false, 'message' => 'something happen wrong with token!!' ]);
+        }
+
         return $this->issueToken($request, $grantType, $client->id, $client->secret);
     }
 
