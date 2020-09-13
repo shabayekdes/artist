@@ -17,7 +17,7 @@ class ArtistController extends Controller
     public function index()
     {
         $artists = User::where('type', 3)->get();
-        
+
         return UserResource::collection($artists);
     }
 
@@ -38,8 +38,15 @@ class ArtistController extends Controller
      * @param  \App\Models\User  $artists
      * @return \Illuminate\Http\Response
      */
-    public function show(User $artist)
-    {     
+    public function show($id)
+    {
+        $artist = User::where(['type' => 3, 'id' => $id])->first();
+
+        if($artist == null){
+            return response()->json(['status' => false, 'message' => 'Artist not found!!'], 404);
+
+        }
+
         return new UserResource($artist);
     }
 
@@ -50,9 +57,17 @@ class ArtistController extends Controller
      * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, User $user)
+    public function update(Request $request, User $artist)
     {
-        //
+        $rating = ($artist->rating + $request->get('rating')) / 2;
+
+// dd($artist->rating == 0 ? $request->get('rating') : $rating);
+        $artist->update([
+            'rating' => $artist->rating == 0 ? $request->get('rating') : $rating
+        ]);
+
+        return response()->json(['status' => true, 'message' => 'Artist has updating rating', 'data' => new UserResource($artist)], 200);
+
     }
 
     /**
