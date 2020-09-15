@@ -35,3 +35,4 @@ Route::middleware('auth:api')->group(function () {
 
 Route::post('login', 'AuthController@login');
 Route::post('register', 'AuthController@register');
+Route::post('check/otp', 'AuthController@otpCheck');
