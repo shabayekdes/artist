@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Http\Resources\CategoryResource;
 
 class PortraitResource extends JsonResource
 {
@@ -24,10 +25,10 @@ class PortraitResource extends JsonResource
             "featured" => $this->featured,
             "new" => $this->new,
             "thumbnail" => url($this->thumbnail),
-            "description" => $this->description,
+            "description" => $this->description ?? "",
             "status" => $this->status,
-            "category_id" => $this->category,
-            "user_id" => $this->user
+            "category" => new CategoryResource($this->category),
+            "artist" => new UserResource($this->user)
         ];
     }
 }

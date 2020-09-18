@@ -21,7 +21,8 @@ class Portrait extends Model
     protected $casts = [
         'featured' => 'boolean',
         'new' => 'boolean',
-        'price' => 'float'
+        'price' => 'float',
+        'status' => 'boolean'
     ];
 
     /**
