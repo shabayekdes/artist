@@ -54,7 +54,7 @@ class AuthController extends Controller
             $message = 'رساله من تطبيق لوحة فنان الكود الخاص بك هو : ' . $user->otp;
 
             $sms = config('services.sms');
-            $url = "{$sms['url']}?send_sms&username={$sms['username']}&password={$sms['password']}&numbers={$user->phone}&sender={$sms['sender']}&message={$message}";
+            $url = "{$sms['url']}?send_sms&username={$sms['username']}&password={$sms['password']}&numbers={$user->phone}&sender={$sms['sender']}&message=رساله من تطبيق لوحة فنان الكود الخاص بك هو : 5124";
             $response = Http::get($url);
 
 
