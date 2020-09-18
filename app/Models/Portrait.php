@@ -22,6 +22,7 @@ class Portrait extends Model
         'featured' => 'boolean',
         'new' => 'boolean',
         'price' => 'float',
+        'rating' => 'float',
         'status' => 'boolean'
     ];
 
