@@ -14,7 +14,5 @@ class DatabaseSeeder extends Seeder
         $this->call(UserSeeder::class);
         $this->call(CategorySeeder::class);
         $this->call(PortraitSeeder::class);
-        $this->call(AttributesSeeder::class);
-        $this->call(AttributeValuesSeeder::class);
     }
 }

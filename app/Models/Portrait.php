@@ -63,4 +63,12 @@ class Portrait extends Model
     {
         return $this->belongsTo(Category::class);
     }
+
+    /**
+     * Get the user that owns the attributes.
+     */
+    public function attributes()
+    {
+        return $this->hasMany(PortraitAttribute::class);
+    }
 }

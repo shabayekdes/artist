@@ -38,7 +38,17 @@ class PortraitController extends Controller
      */
     public function show(Portrait $portrait)
     {
-        return response()->json(['status' => true, 'data' => new PortraitResource($portrait) ]);
+        $portrait->load('attributes');
+
+        $attributes = $portrait->attributes->groupBy('type')->toArray();
+
+        $data = [
+            'portait' => new PortraitResource($portrait),
+            'size' => isset($attributes['size']) ? $attributes['size'] : [],
+            'type' => isset($attributes['type']) ? $attributes['type'] : []
+        ];
+        // dd($data);
+        return response()->json(['status' => true, 'data' => $data ]);
     }
 
     /**
