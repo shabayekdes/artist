@@ -36,6 +36,17 @@ class Portrait extends Model
     }
 
     /**
+     * Scope a query to only include feature portraits.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeNew($query)
+    {
+        return $query->where('new', true);
+    }
+
+    /**
      * Get the user that owns the portrait.
      */
     public function user()
