@@ -30,6 +30,9 @@ Route::middleware('auth:api')->group(function () {
     Route::get('/fetch-old-messages', 'MessagesController@getOldMessages');
     Route::post('/messages', 'MessagesController@store');
 
+    Route::get('/my-account', 'AccountController@index');
+    Route::post('/my-account', 'AccountController@store');
+
 });
 
 
