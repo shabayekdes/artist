@@ -51,7 +51,7 @@ class AuthController extends Controller
                 'otp' => rand(1000, 9999)
             ]);
 
-            $message = 'رساله من تطبيق لوحة فنان الكود الخاص بك هو : ' . $user->otp;
+            $message = 'this verfication code from artist portait: ' . $user->otp;
 
             $sms = config('services.sms');
             $url = "{$sms['url']}?send_sms&username={$sms['username']}&password={$sms['password']}&numbers={$user->phone}&sender={$sms['sender']}&message=رساله من تطبيق لوحة فنان الكود الخاص بك هو : 5124";
