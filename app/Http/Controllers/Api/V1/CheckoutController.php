@@ -27,6 +27,7 @@ class CheckoutController extends Controller
      */
     public function store(CheckoutStoreRequest $request)
     {
+        dd($request->all());
         Order::create($request->all());
 
         return response()->json(['status' => true, 'message' => 'Order was added!!']);

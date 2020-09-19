@@ -34,6 +34,7 @@ class UserAddressController extends Controller
      */
     public function store(UserAddressStoreRequest $request)
     {
+        
         $data = auth()->user()->addresses()->create($request->all());
 
         return response()->json(['status' => true, 'message' => 'Address was added!!']);

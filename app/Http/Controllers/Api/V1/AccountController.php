@@ -30,6 +30,7 @@ class AccountController extends Controller
      */
     public function store(Request $request)
     {
+        dd(setting('site.WHAT'));
         $user = auth()->user();
 
         request()->validate([
@@ -55,7 +56,7 @@ class AccountController extends Controller
 
         $user->update($data);
 
-        return response()->json(['status' => true, 'message' => 'Your account has updating rating'], 200);
+        return response()->json(['status' => true, 'message' => 'Your account has updated'], 200);
 
     }
 
