@@ -18,7 +18,7 @@ class HomeController extends Controller
     public function index()
     {
         $featured = Portrait::feature()->get();
-        $new = Portrait::new()->get();
+        $new = Portrait::orderBy('id', 'desc')->latest()->get();
 
         $data = [
             'lastest' =>  PortraitResource::collection($new),

@@ -112,4 +112,44 @@ class AuthController extends Controller
         }
 
     }
+
+    /**
+     * @param Request $request
+     * @return mixed
+     */
+    public function forgetPassword(Request $request)
+    {
+        $request->validate([
+            'phone' => ['required','exists:users,phone'],
+        ]);
+
+        \DB::beginTransaction();
+        try {
+
+
+            $user = User::where('phone', $request->get('phone') )->first();
+            
+            $user->update([
+                'otp' => rand(1000, 9999)
+            ]);
+            
+            $message = 'this verfication code from artist portait: ' . $user->otp;
+
+            $sms = config('services.sms');
+            $url = "{$sms['url']}?send_sms&username={$sms['username']}&password={$sms['password']}&numbers={$user->phone}&sender={$sms['sender']}&message=رساله من تطبيق لوحة فنان الكود الخاص بك هو : 5124";
+            $response = Http::get($url);
+
+
+            \DB::commit();
+
+            if($response->status() == 200){
+                return response()->json(['status' => true, 'message' => 'OTP send successfully']);
+            }
+
+        } catch (\Throwable $th) {
+            DB::rollback();
+        }
+
+    }
+    
 }
