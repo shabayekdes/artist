@@ -53,4 +53,9 @@ class User extends \TCG\Voyager\Models\User
     {
         return $this->hasMany(UserAddress::class);
     }
+
+    public function portraits()
+    {
+        return $this->hasMany(Portrait::class);
+    }
 }
