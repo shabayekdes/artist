@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use App\Models\Order;
+use App\Models\OrderProtrait;
 use Illuminate\Http\Request;
 use App\Http\Requests\CheckoutStoreRequest;
 
@@ -27,8 +28,32 @@ class CheckoutController extends Controller
      */
     public function store(CheckoutStoreRequest $request)
     {
-        dd($request->all());
-        Order::create($request->all());
+        $order = Order::create([
+            "item_count" => $request->get('item_count'),
+            "grand_total" => $request->get('grand_total'),
+            "payment_method" => $request->get('payment_method'),
+            "payment_status" => $request->get('payment_status'),
+            "user_address_id" => $request->get('user_address_id'),
+            "user_id" => auth()->user()->id
+
+        ]);
+
+        $order->update([
+            'key' => 'OR' . sprintf('%05u', $order->id)
+        ]);
+
+        $details = $request->input('details');
+
+        foreach ($details as $key => $detail) {
+            $orderProtrait = OrderProtrait::create([
+                "order_id" => $order->id,
+                "portrait_id" => $detail['portrait_id'],
+                "quantity" => $detail['quantity'],
+                "total" => $detail['total'],
+            ]);
+
+            $orderProtrait->portraitAttributes()->sync($detail['attributes']);
+        }
 
         return response()->json(['status' => true, 'message' => 'Order was added!!']);
     }

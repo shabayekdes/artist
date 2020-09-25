@@ -24,7 +24,13 @@ class CheckoutStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'item_count' => 'required',
+            'grand_total' => 'required',
+            'payment_method' => 'required',
+            'payment_status' => 'required',
+            'user_address_id' => 'required|exists:user_addresses,id',
+            'details' => 'required',
+            'details.*.attributes' => 'required',
         ];
     }
 }
