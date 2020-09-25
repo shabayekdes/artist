@@ -55,7 +55,7 @@ class CheckoutController extends Controller
             $orderProtrait->portraitAttributes()->sync($detail['attributes']);
         }
 
-        return response()->json(['status' => true, 'message' => 'Order was added!!']);
+        return response()->json(['status' => true, 'message' => 'Order was added!!', 'data' => ['order_id' => $order->key]]);
     }
 
     /**
