@@ -24,6 +24,15 @@ class AuthController extends Controller
             'password' => ['required', 'string', 'min:8'],
         ]);
 
+        $user = User::where('phone', $request->get('phone') )->first();
+
+        if($user->email_verified_at == null){
+            return response()->json([
+                'status' => false, 
+                'message' => 'Your account not verify'], 404);
+
+        }
+
         return $this->issuePasswordToken($request);
     }
 
@@ -38,6 +47,7 @@ class AuthController extends Controller
             'phone' => ['required','unique:users'],
             'type' => ['required', 'in:2,3'],
             'password' => ['required','confirmed', 'string', 'min:8'],
+            'fcm_token' => 'required',
         ]);
 
         \DB::beginTransaction();
@@ -47,6 +57,7 @@ class AuthController extends Controller
             $user = User::create([
                 'name' => $request->get('name'),
                 'phone' => $request->get('phone'),
+                'fcm_token' => $request->get('fcm_token'),
                 'password' => bcrypt($request->get('password')),
                 'otp' => rand(1000, 9999)
             ]);
