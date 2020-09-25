@@ -35,6 +35,9 @@ Route::middleware('auth:api')->group(function () {
     Route::get('/my-account', 'AccountController@index');
     Route::post('/my-account', 'AccountController@store');
 
+    Route::post('portraits', 'PortraitController@store');
+
+
 });
 
 
