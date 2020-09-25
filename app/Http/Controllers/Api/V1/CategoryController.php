@@ -44,6 +44,8 @@ class CategoryController extends Controller
      */
     public function show(Category $category)
     {
+        $category->load('portraits');
+
         return response()->json(['status' => true, 'data' => new CategoryResource($category) ]);
     }
 

@@ -14,12 +14,30 @@ class CategoryResource extends JsonResource
      */
     public function toArray($request)
     {
+        $portraits = $this->portraits != null ?$this->portraits->mapWithKeys(function($item, $key){
+            return [
+                "id" => $item->id,
+                "name" => $item->name,
+                "sku" => $item->sku,
+                "slug" => $item->slug,
+                "quantity" => $item->quantity,
+                "price" => $item->price,
+                "new" => $item->new,
+                "featured" => $item->featured,
+                "rating" => $item->rating,
+                "thumbnail" => url($item->thumbnail),
+                "description" => $item->description ?? "",
+                "status" => $item->status
+            ];
+        }) : [];
+
         return [
             "id" => $this->id,
             "name"=> $this->name,
             "slug"=> $this->slug,
             "description"=> $this->description ?? "",  
-            "image"=> url($this->image)
+            "image"=> url($this->image),
+            "portraits" => $portraits
         ];
     }
 }
