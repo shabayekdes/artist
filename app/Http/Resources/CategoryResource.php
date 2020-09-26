@@ -14,7 +14,7 @@ class CategoryResource extends JsonResource
      */
     public function toArray($request)
     {
-        $portraits = $this->portraits != null ?$this->portraits->mapWithKeys(function($item, $key){
+        $portraits = $this->portraits != null ?$this->portraits->map(function($item, $key){
             return [
                 "id" => $item->id,
                 "name" => $item->name,
