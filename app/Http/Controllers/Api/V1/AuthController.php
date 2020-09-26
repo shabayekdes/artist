@@ -59,7 +59,9 @@ class AuthController extends Controller
                 'phone' => $request->get('phone'),
                 'fcm_token' => $request->get('fcm_token'),
                 'password' => bcrypt($request->get('password')),
-                'otp' => rand(1000, 9999)
+                // 'otp' => rand(1000, 9999)
+                'otp' => 1111
+
             ]);
 
             $message = 'this verfication code from artist portait: ' . $user->otp;
@@ -141,7 +143,8 @@ class AuthController extends Controller
             $user = User::where('phone', $request->get('phone') )->first();
             
             $user->update([
-                'otp' => rand(1000, 9999)
+                // 'otp' => rand(1000, 9999)
+                'otp' => 1111
             ]);
             
             $message = 'this verfication code from artist portait: ' . $user->otp;
