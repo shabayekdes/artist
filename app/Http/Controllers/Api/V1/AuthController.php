@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Traits\TokensManagerTrait;
 use App\Models\User;
 use Illuminate\Support\Facades\Http;
+// use Illuminate\Support\Facades\DB;
 
 class AuthController extends Controller
 {
@@ -25,6 +26,13 @@ class AuthController extends Controller
         ]);
 
         $user = User::where('phone', $request->get('phone') )->first();
+        
+        if($user == null){
+            return response()->json([
+                'status' => false, 
+                'message' => 'Sorry no account found in this number'], 404);
+
+        }
 
         if($user->email_verified_at == null){
             return response()->json([
