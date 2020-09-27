@@ -75,7 +75,7 @@ class AuthController extends Controller
             $message = 'this verfication code from artist portait: ' . $user->otp;
 
             $sms = config('services.sms');
-            $url = "{$sms['url']}?send_sms&username={$sms['username']}&password={$sms['password']}&numbers={$user->phone}&sender={$sms['sender']}&message=رساله من تطبيق لوحة فنان الكود الخاص بك هو : 5124";
+            $url = "{$sms['url']}?send_sms&username={$sms['username']}&password={$sms['password']}&numbers={$user->phone}&sender={$sms['sender']}&message={$message}";
             $response = Http::get($url);
 
 
@@ -133,7 +133,44 @@ class AuthController extends Controller
         }
 
     }
+        /**
+     * @param Request $request
+     * @return mixed
+     */
+    public function otpResend(Request $request)
+    {
+        \DB::beginTransaction();
 
+        $request->validate([
+            'phone' => ['required','exists:users,phone'],
+        ]);
+
+        try {
+            $user = User::where('phone', $request->get('phone') )->first();
+
+
+            $user->update([
+                // 'otp' => rand(1000, 9999)
+                'otp' => 1111
+            ]);
+
+            $message = 'this verfication code from artist portait: ' . $user->otp;
+
+            $sms = config('services.sms');
+            $url = "{$sms['url']}?send_sms&username={$sms['username']}&password={$sms['password']}&numbers={$user->phone}&sender={$sms['sender']}&message={$message}";
+            $response = Http::get($url);
+
+            \DB::commit();
+
+            return response()->json(['status' => true, 'message' => 'OTP send successfully']);
+
+        } catch ( \Exception $e ) {
+            \DB::rollback();
+            return ['something wrong' => false];
+        }
+
+    }
+    
     /**
      * @param Request $request
      * @return mixed

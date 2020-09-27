@@ -48,5 +48,6 @@ Route::middleware('auth:api')->group(function () {
 
 Route::post('login', 'AuthController@login');
 Route::post('register', 'AuthController@register');
+Route::post('resend/otp', 'AuthController@otpResend');
 Route::post('check/otp', 'AuthController@otpCheck');
 Route::post('forget-password', 'AuthController@forgetPassword');
