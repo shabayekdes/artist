@@ -38,6 +38,7 @@ Route::middleware('auth:api')->group(function () {
     Route::post('/my-account', 'AccountController@store');
     Route::get('/my-orders', 'OrderController@index');
     Route::get('/my-alerts', 'AlertController@index');
+    Route::put('/fcm-token', 'AccountController@fcmToken');
 
     Route::post('portraits', 'PortraitController@store');
 

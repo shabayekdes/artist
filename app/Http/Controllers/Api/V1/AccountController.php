@@ -59,4 +59,26 @@ class AccountController extends Controller
         return response()->json(['status' => true, 'message' => 'Your account has updated'], 200);
 
     }
+
+        /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function fcmToken(Request $request)
+    {
+        $user = auth()->user();
+
+        request()->validate([
+            'fcm_token' => 'required',
+        ]);
+
+        $user->update([
+            'fcm_token' => $request->get('fcm_token')
+        ]);
+
+        return response()->json(['status' => true, 'message' => 'Your fcm token has updated'], 200);
+
+    }
 }
