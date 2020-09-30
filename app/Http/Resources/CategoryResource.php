@@ -27,7 +27,8 @@ class CategoryResource extends JsonResource
                 "rating" => $item->rating,
                 "thumbnail" => url($item->thumbnail),
                 "description" => $item->description ?? "",
-                "status" => $item->status
+                "status" => $item->status,
+                "artist" => new UserResource($item->user)
             ];
         }) : [];
 
