@@ -33,11 +33,11 @@ class AccountController extends Controller
         $user = auth()->user();
 
         request()->validate([
-            'name' => 'required',
+            // 'name' => 'required',
             'phone' => 'required|unique:users,phone,' . $user->id,
-            'description' => 'required',
-            'avatar' => 'required',
-            'fcm_token' => 'required',
+            // 'description' => 'required',
+            // 'avatar' => 'required',
+            // 'fcm_token' => 'required',
         ]);
 
         $data = $request->all();
