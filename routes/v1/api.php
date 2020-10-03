@@ -41,7 +41,9 @@ Route::middleware('auth:api')->group(function () {
     Route::put('/fcm-token', 'AccountController@fcmToken');
 
     Route::post('portraits', 'PortraitController@store');
+    Route::resource('favorites', 'FavoriteController');
 
+    Route::resource('cart', 'CartController');
 
 });
 
