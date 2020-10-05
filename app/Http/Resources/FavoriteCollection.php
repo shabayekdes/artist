@@ -25,7 +25,7 @@ class FavoriteCollection extends ResourceCollection
                 "new" => $item->new,
                 "featured" => $item->featured,
                 "rating" => $item->rating,
-                "thumbnail" => url($item->thumbnail),
+                "thumbnail" => url("storage/" .$item->thumbnail),
                 "description" => $item->description ?? "",
                 "status" => $item->status,
                 "category" => $item->category,

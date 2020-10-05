@@ -25,7 +25,7 @@ class CategoryResource extends JsonResource
                 "new" => $item->new,
                 "featured" => $item->featured,
                 "rating" => $item->rating,
-                "thumbnail" => url($item->thumbnail),
+                "thumbnail" => url("storage/" . $item->thumbnail),
                 "description" => $item->description ?? "",
                 "status" => $item->status,
                 "artist" => new UserResource($item->user)
@@ -37,7 +37,7 @@ class CategoryResource extends JsonResource
             "name"=> $this->name,
             "slug"=> $this->slug,
             "description"=> $this->description ?? "",  
-            "image"=> url($this->image),
+            "image"=> url("storage/" .$this->image),
             "portraits" => $portraits
         ];
     }
