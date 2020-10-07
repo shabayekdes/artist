@@ -18,6 +18,6 @@ class CartPortrait extends Model
      */
     public function portraitAttributes()
     {
-        return $this->belongsToMany(PortraitAttribute::class, 'cart_portrait_attributes');
+        return $this->belongsToMany(PortraitAttribute::class, 'cart_portrait_attributes')->as('attributes');
     }
 }

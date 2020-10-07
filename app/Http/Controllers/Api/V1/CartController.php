@@ -19,6 +19,8 @@ class CartController extends Controller
     {
         $cart = auth()->user()->cart;
 
+        $cart->load('portraits.portraitAttributes');
+
         return OrderResource::collection($cart);
     }
 
