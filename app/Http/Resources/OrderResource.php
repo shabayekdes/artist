@@ -26,6 +26,7 @@ class OrderResource extends JsonResource
                     "total"=> $item->total,
                     "cart_id"=> $item->cart_id,
                     "portrait_id"=> $item->portrait_id,
+                    "detials"=> $item->portrait,
                     "attributes" => $item->portraitAttributes
                 ];
             }),

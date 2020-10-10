@@ -17,11 +17,11 @@ class CartController extends Controller
      */
     public function index()
     {
-        $cart = auth()->user()->cart;
+        $cart = auth()->user()->cart()->first();
 
-        $cart->load('portraits.portraitAttributes');
+        $cart->load('portraits.portraitAttributes', 'portraits.portrait');
 
-        return OrderResource::collection($cart);
+        return new OrderResource($cart);
     }
 
     /**

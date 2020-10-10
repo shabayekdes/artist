@@ -13,11 +13,14 @@ class CartPortrait extends Model
      */
     protected $guarded = [];
 
-    /**
-     * The roles that belong to the user.
-     */
+
     public function portraitAttributes()
     {
         return $this->belongsToMany(PortraitAttribute::class, 'cart_portrait_attributes')->as('attributes');
+    }
+
+    public function portrait()
+    {
+        return $this->belongsTo(Portrait::class);
     }
 }
