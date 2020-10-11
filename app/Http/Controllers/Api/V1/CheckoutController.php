@@ -28,14 +28,15 @@ class CheckoutController extends Controller
      */
     public function store(CheckoutStoreRequest $request)
     {
+
         $order = Order::create([
             "item_count" => $request->get('item_count'),
             "grand_total" => $request->get('grand_total'),
             "payment_method" => $request->get('payment_method'),
             "payment_status" => $request->get('payment_status'),
             "user_address_id" => $request->get('user_address_id'),
-            "user_id" => auth()->user()->id
-
+            "user_id" => auth()->user()->id,
+            "profit" => $request->get('grand_total') * setting('site.profit') / 100
         ]);
 
         $order->update([
