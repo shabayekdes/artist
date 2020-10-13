@@ -66,7 +66,7 @@ class UserAddressController extends Controller
 
         }
         
-        $userAddress->update($request->only(['address', 'region', 'city', 'country']));
+        $userAddress->update($request->only(['address', 'address2', 'region', 'city', 'country']));
 
         return response()->json(['status' => true, 'message' => 'Address was updated!!']);
 

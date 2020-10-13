@@ -25,6 +25,7 @@ class UserAddressStoreRequest extends FormRequest
     {
         return [
             "address" => "required",
+            "address2" => "nullable",
             "region" => "required",
             "city" => "required",
             "country" => "required"
