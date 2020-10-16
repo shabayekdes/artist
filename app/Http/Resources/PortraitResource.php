@@ -18,9 +18,6 @@ class PortraitResource extends JsonResource
         return [
             "id" => $this->id,
             "name" => $this->name,
-            "sku" => $this->sku,
-            "slug" => $this->slug,
-            "quantity" => $this->quantity,
             "price" => $this->price,
             "new" => $this->new,
             "featured" => $this->featured,
