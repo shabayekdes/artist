@@ -210,5 +210,50 @@ class AuthController extends Controller
         }
 
     }
+
+       /**
+     * @param Request $request
+     * @return mixed
+     */
+    public function changePassword(Request $request)
+    {
+        \DB::beginTransaction();
+
+        $request->validate([
+            'phone' => ['required','exists:users,phone'],
+            'otp' => ['required'],
+            'password' => ['required','confirmed', 'string', 'min:8'],
+        ]);
+
+        try {
+            $user = User::where('phone', $request->get('phone') )->first();
+
+            if($user->otp != $request->get('otp')){
+                return response()->json(['status' => false, 'message' => 'Invalid OTP'], 400);
+            }
+
+            $user->update([
+                'email_verified_at' => now(),
+                'otp' => 0,
+                'password' => bcrypt($request->get('password')),
+            ]);
+
+            \DB::commit();
+
+            $token = $user->createToken('Token Name')->accessToken;
+
+            $data = [
+                "token_type" => "Bearer",
+                "access_token" => $token,
+            ];
+
+            return response()->json($data, 200);
+
+        } catch ( \Exception $e ) {
+            \DB::rollback();
+            return ['something wrong' => false];
+        }
+
+    }
     
 }
