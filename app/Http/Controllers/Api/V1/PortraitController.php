@@ -56,7 +56,7 @@ class PortraitController extends Controller
             PortraitAttribute::create([
                 'portrait_id' => $portrait->id,
                 'value' => $item,
-                'type' => 'postion'
+                'type' => 'position'
             ]);
         }
 
@@ -79,7 +79,7 @@ class PortraitController extends Controller
         $data = [
             'portait' => new PortraitResource($portrait),
             'size' => isset($attributes['size']) ? $attributes['size'] : [],
-            'type' => isset($attributes['type']) ? $attributes['type'] : []
+            'position' => isset($attributes['position']) ? $attributes['position'] : []
         ];
         return response()->json(['status' => true, 'data' => $data ]);
     }
