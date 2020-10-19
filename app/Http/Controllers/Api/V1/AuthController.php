@@ -66,6 +66,7 @@ class AuthController extends Controller
                 'name' => $request->get('name'),
                 'phone' => $request->get('phone'),
                 'fcm_token' => $request->get('fcm_token'),
+                'type' => $request->get('type'),
                 'password' => bcrypt($request->get('password')),
                 // 'otp' => rand(1000, 9999)
                 'otp' => 1111
