@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class Portrait extends Model
 {
@@ -70,5 +71,20 @@ class Portrait extends Model
     public function attributes()
     {
         return $this->hasMany(PortraitAttribute::class);
+    }
+
+        /**
+     * The "booted" method of the model.
+     *
+     * @return void
+     */
+    protected static function booted()
+    {
+        static::deleting(function ($portrait) {
+            $exists = Storage::exists($portrait->thumbnail);
+            if($exists){
+                Storage::delete($portrait->thumbnail);
+            }
+        });
     }
 }
