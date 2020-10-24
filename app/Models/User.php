@@ -74,7 +74,10 @@ class User extends \TCG\Voyager\Models\User
         return $this->hasMany(Alert::class);
     }
 
-
+    public function scopeArtist($query)
+    {
+        return $query->where('type', 3);
+    }
     /**
      * The portraits that belong to the user.
      */
