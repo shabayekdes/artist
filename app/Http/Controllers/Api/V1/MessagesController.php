@@ -9,6 +9,49 @@ use App\Http\Resources\MessageResource;
 
 class MessagesController extends Controller
 {
+        /**
+     * getLoadLatestMessages
+     *
+     *
+     * @param Request $request
+     */
+    public function getLoadLatestChats(Request $request)
+    {
+        // $chats = Message::with('message', 'twoUser')
+        //     ->where('from_user', auth()->user()->id)
+        //     ->orWhere('two_user', auth()->user()->id)
+        //     ->get(); 
+
+        $chats = Message::with('fromUser', 'toUser')->where('from_user', auth()->user()->id)
+                    ->orWhere('to_user', auth()->user()->id)->orderBy('created_at', 'ASC')->get();    
+
+                    
+        $result = $chats->map(function ($item, $key) {
+
+            if($item->fromUser->id == auth()->user()->id){
+
+                $toUser = $item->toUser;
+            }else{
+                $toUser = $item->fromUser;
+
+            }
+
+            return [
+                "id" => $item->id,
+                // "from_user" => $item->fromUser,
+                "to_user" =>[
+                    'id' => $toUser->id,
+                    'name' => $toUser->name,
+                    'phone' => $toUser->phone,
+                    'avatar' => $toUser->avatar ? url('storage/'.$toUser->avatar) : null
+                ],
+                "content" => $item->content
+            ];
+        });    
+
+        return response()->json(['state' => true, 'data' => $result]);
+    }
+
     /**
      * getLoadLatestMessages
      *

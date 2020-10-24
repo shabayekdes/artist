@@ -30,6 +30,7 @@ Route::middleware('auth:api')->group(function () {
 
     Route::resource('user-address', 'UserAddressController');
     Route::resource('checkout', 'CheckoutController');
+    Route::get('/load-latest-chats', 'MessagesController@getLoadLatestChats');
     Route::get('/load-latest-messages', 'MessagesController@getLoadLatestMessages');
     Route::get('/fetch-old-messages', 'MessagesController@getOldMessages');
     Route::post('/messages', 'MessagesController@store');
