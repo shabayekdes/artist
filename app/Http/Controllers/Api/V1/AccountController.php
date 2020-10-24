@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers\Api\V1;
 
-use Illuminate\Http\Request;
-use App\Http\Resources\UserResource;
-use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Http\Resources\UserResource;
+use Illuminate\Support\Facades\Storage;
+use App\Http\Resources\PortraitResource;
 
 class AccountController extends Controller
 {
@@ -80,5 +81,21 @@ class AccountController extends Controller
 
         return response()->json(['status' => true, 'message' => 'Your fcm token has updated'], 200);
 
+    }
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function myPortrait()
+    {
+        $user = auth()->user();
+
+        if($user->type != 3){
+            return response()->json(['status' => false, 'message' => 'sorry not found'], 404);
+        }
+
+        return response()->json(['status' => true, 'data' => PortraitResource::collection($user->portraits)], 200);
     }
 }
