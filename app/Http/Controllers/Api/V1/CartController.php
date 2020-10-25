@@ -70,6 +70,27 @@ class CartController extends Controller
     }
 
     /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request)
+    {
+
+        $cart = Cart::where("user_id", auth()->user()->id)->first();
+        $cartPortrait = CartPortrait::where([
+                ["cart_id", $cart->id],
+                ["portrait_id", $request->get('portrait_id')]
+            ])->update([
+                'quantity' => $request->get('quantity')
+            ]);
+
+
+        return response()->json(['status' => true, 'message' => 'Cart has updated'], 200);
+    }
+
+    /**
      * Remove the specified resource from storage.
      *
      * @param  Cart  $cart

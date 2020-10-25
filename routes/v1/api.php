@@ -50,6 +50,7 @@ Route::middleware('auth:api')->group(function () {
     Route::post('portraits', 'PortraitController@store');
     Route::resource('favorites', 'FavoriteController');
 
+    Route::put('cart', 'CartController@update');
     Route::resource('cart', 'CartController');
 
 });
