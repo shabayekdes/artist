@@ -24,7 +24,8 @@ Route::post('page/contact-us', 'ContactUsController@store');
 Route::get('page/{page}', 'PageController@show');
 
 Route::resource('artists', 'ArtistController');
-
+//search
+Route::get('portraits', 'PortraitController@index');
 
 Route::middleware('auth:api')->group(function () {
 

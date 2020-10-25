@@ -18,7 +18,14 @@ class PortraitController extends Controller
      */
     public function index()
     {
-        //
+
+        $search = request()->query('search');
+
+        $portraits = Portrait::where('name', 'LIKE', "%{$search}%")
+                    ->orWhere('description', 'LIKE', "%{$search}%")->get();
+
+
+        return response()->json(['status' => true, 'data' => PortraitResource::collection($portraits)]);
     }
 
     /**

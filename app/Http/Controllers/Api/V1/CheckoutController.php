@@ -7,6 +7,7 @@ use App\Models\Order;
 use App\Models\OrderProtrait;
 use Illuminate\Http\Request;
 use App\Http\Requests\CheckoutStoreRequest;
+use App\Models\Portrait;
 
 class CheckoutController extends Controller
 {
@@ -28,8 +29,7 @@ class CheckoutController extends Controller
      */
     public function store(CheckoutStoreRequest $request)
     {
-
-        $order = Order::create([
+         $order = Order::create([
             "item_count" => $request->get('item_count'),
             "grand_total" => $request->get('grand_total'),
             "payment_method" => $request->get('payment_method'),
@@ -52,6 +52,11 @@ class CheckoutController extends Controller
                 "quantity" => $detail['quantity'],
                 "total" => $detail['total'],
             ]);
+            $portrait = Portrait::find($detail['portrait_id']);
+
+            $artistProfit = ($detail['total'] * $detail['quantity']) * (100 - setting('site.profit')) / 100;
+
+            $portrait->user->update(['wallet' => $artistProfit]);
 
             $orderProtrait->portraitAttributes()->sync($detail['attributes']);
         }
