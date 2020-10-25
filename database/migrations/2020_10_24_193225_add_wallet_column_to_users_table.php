@@ -14,7 +14,7 @@ class AddWalletColumnToUsersTable extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->decimal('wallet', 12, 4)->nullable();
+            $table->decimal('wallet', 12, 4)->default(0);
         });
     }
 
