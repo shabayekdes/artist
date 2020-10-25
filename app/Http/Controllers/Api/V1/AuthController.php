@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers\Api\V1;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use App\Http\Traits\TokensManagerTrait;
 use App\Models\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Http;
+use App\Http\Traits\TokensManagerTrait;
 // use Illuminate\Support\Facades\DB;
 
 class AuthController extends Controller
@@ -58,7 +59,7 @@ class AuthController extends Controller
             'fcm_token' => 'required',
         ]);
 
-        \DB::beginTransaction();
+        DB::beginTransaction();
         try {
 
 
@@ -80,7 +81,7 @@ class AuthController extends Controller
             $response = Http::get($url);
 
 
-            \DB::commit();
+            DB::commit();
 
             if($response->status() == 200){
                 return response()->json(['status' => true, 'message' => 'OTP send successfully']);
@@ -178,8 +179,9 @@ class AuthController extends Controller
      */
     public function forgetPassword(Request $request)
     {
+
         $request->validate([
-            'phone' => ['required','exists:users,phone'],
+            'phone' => ['required'],
         ]);
 
         \DB::beginTransaction();
@@ -187,7 +189,11 @@ class AuthController extends Controller
 
 
             $user = User::where('phone', $request->get('phone') )->first();
-            
+
+            if($user == null){
+                return response()->json(['status' => false, 'message' => 'User not found']);
+
+            }
             $user->update([
                 // 'otp' => rand(1000, 9999)
                 'otp' => 1111
@@ -205,6 +211,8 @@ class AuthController extends Controller
             if($response->status() == 200){
                 return response()->json(['status' => true, 'message' => 'OTP send successfully']);
             }
+
+            return response()->json(['status' => false, 'message' => 'Worng happen']);
 
         } catch (\Throwable $th) {
             DB::rollback();
