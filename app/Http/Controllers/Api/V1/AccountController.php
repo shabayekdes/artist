@@ -98,4 +98,17 @@ class AccountController extends Controller
 
         return response()->json(['status' => true, 'data' => PortraitResource::collection($user->portraits)], 200);
     }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function myWallet()
+    {
+        $user = auth()->user();
+
+        return response()->json(['status' => true, 'data' => $user->wallet], 200);
+    }
 }
