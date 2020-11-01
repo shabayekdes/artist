@@ -16,7 +16,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $categories = Category::all();
+        $categories = Category::with('portraits.attributes')->get();
 
         $data = [
             'list_categories' => CategoryResource::collection($categories)

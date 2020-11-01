@@ -15,7 +15,9 @@ class CategoryResource extends JsonResource
     public function toArray($request)
     {
         $portraits = $this->portraits != null ?$this->portraits->map(function($item, $key){
-            return [
+
+            return [        
+
                 "id" => $item->id,
                 "name" => $item->name,
                 "price" => $item->price,
@@ -25,7 +27,9 @@ class CategoryResource extends JsonResource
                 "thumbnail" => url("storage/" . $item->thumbnail),
                 "description" => $item->description ?? "",
                 "status" => $item->status,
-                "artist" => new UserResource($item->user)
+                "artist" => new UserResource($item->user),
+                "size" => $item->attributes->where('type', 'size')->values(),
+                "position" => $item->attributes->where('type', 'position')->values(),
             ];
         }) : [];
 

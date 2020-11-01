@@ -26,7 +26,10 @@ class PortraitResource extends JsonResource
             "description" => $this->description ?? "",
             "status" => $this->status,
             "category" => $this->category,
-            "artist" => new UserResource($this->user)
+            "artist" => new UserResource($this->user),
+            "size" => $this->attributes->where('type', 'size')->toArray(),
+            "position" => $this->attributes->where('type', 'position')->toArray(),
+
         ];
     }
 }

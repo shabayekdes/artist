@@ -40,11 +40,20 @@ class PortraitController extends Controller
         $size = json_decode($request->get('size'), true);
         $position = json_decode($request->get('position'), true);
 
+        $thumbnail = null;
+        if($request->has('thumbnail')){
+
+            $image = $request->file('thumbnail');
+
+            $fileName = time().'.'.$image->getClientOriginalExtension();
+            $image->storeAs('thumbnail', $fileName,'public');
+            $thumbnail = '/storage/thumbnail/'. $fileName;
+        }
+
         $portrait = Portrait::create([
             'name' => $request->get('name'),
-            'sku' => Str::random(40),
             'price' => $request->get('price'),
-            'thumbnail' => $request->get('test'),
+            'thumbnail' => $thumbnail,
             'description' => $request->get('description'),
             'category_id' => $request->get('category_id'),
             'user_id' => auth()->user()->id,
@@ -109,8 +118,12 @@ class PortraitController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Portrait $portrait)
     {
-        //
+        abort_if($portrait->user_id != auth()->user()->id, 401, "You not have this permission to delete portrait");
+        $portrait->delete();
+
+        return response()->json(['status' => true, 'message' => 'Portrait was deleted successfully' ]);
+
     }
 }
