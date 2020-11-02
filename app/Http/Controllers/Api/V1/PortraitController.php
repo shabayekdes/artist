@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers\Api\V1;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Models\Portrait;
-use App\Models\PortraitAttribute;
-use App\Http\Resources\PortraitResource;
 use Illuminate\Support\Str;
+use Illuminate\Http\Request;
+use App\Models\PortraitAttribute;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
+use App\Http\Resources\PortraitResource;
 
 class PortraitController extends Controller
 {
@@ -40,14 +41,20 @@ class PortraitController extends Controller
         $size = json_decode($request->get('size'), true);
         $position = json_decode($request->get('position'), true);
 
+
         $thumbnail = null;
-        if($request->has('thumbnail')){
+        if($request->has('thumbnail') && preg_match('/^data:image\/(\w+);base64,/', $request->get('thumbnail'))){
 
-            $image = $request->file('thumbnail');
+            $image = $request->get('thumbnail');
 
-            $fileName = time().'.'.$image->getClientOriginalExtension();
-            $image->storeAs('thumbnail', $fileName,'public');
-            $thumbnail = '/storage/thumbnail/'. $fileName;
+            $fileName = time().'.'.Str::between($request->get('thumbnail'),'data:image/', ';base64');
+
+            $data = substr($image, strpos($image, ',') + 1);
+
+            $data = base64_decode($data);
+            Storage::put("public/portraits/".$fileName, $data);
+
+            $thumbnail = '/storage/portraits/'. $fileName;
         }
 
         $portrait = Portrait::create([

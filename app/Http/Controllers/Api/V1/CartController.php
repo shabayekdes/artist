@@ -19,9 +19,15 @@ class CartController extends Controller
     {
         $cart = auth()->user()->cart()->first();
 
-        $cart->load('portraits.portraitAttributes', 'portraits.portrait');
+        if($cart != null){
 
-        return new OrderResource($cart);
+            $cart->load('portraits.portraitAttributes', 'portraits.portrait');
+            return new OrderResource($cart);
+        }
+
+        return response()->json(['status' => false, 'data' => []]);
+
+
     }
 
     /**
