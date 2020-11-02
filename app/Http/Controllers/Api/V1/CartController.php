@@ -38,6 +38,13 @@ class CartController extends Controller
      */
     public function store(Request $request)
     {
+        request()->validate([
+            'quantity' => 'required|integer',
+            'total' => 'required|integer',
+            'portrait_id' => 'required|exists:portraits,id',
+            'attributes' => 'required|array',
+        ]);
+
         $cart = Cart::where("user_id", auth()->user()->id)->first();
 
         if($cart == null){
