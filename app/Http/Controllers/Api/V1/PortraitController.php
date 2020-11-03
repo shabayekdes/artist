@@ -38,8 +38,8 @@ class PortraitController extends Controller
     public function store(Request $request)
     {
 
-        $size = json_decode($request->get('size'), true);
-        $position = json_decode($request->get('position'), true);
+        // dd($request->all());
+        $position = explode(",", $request->get('position'));
 
 
         $thumbnail = null;
@@ -66,15 +66,12 @@ class PortraitController extends Controller
             'user_id' => auth()->user()->id,
         ]);
 
-
-        foreach ($size as $key => $item) {
-            PortraitAttribute::create([
-                'portrait_id' => $portrait->id,
-                'value' => $item,
-                'type' => 'size'
-            ]);
-        }
-
+        PortraitAttribute::create([
+            'portrait_id' => $portrait->id,
+            'value' => $request->get('size'),
+            'type' => 'size'
+        ]);
+        
         foreach ($position as $key => $item) {
             PortraitAttribute::create([
                 'portrait_id' => $portrait->id,

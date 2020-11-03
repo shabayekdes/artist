@@ -46,6 +46,7 @@ Route::middleware('auth:api')->group(function () {
     Route::put('/alerts/{alert}', 'AlertController@update');
 
     Route::put('/fcm-token', 'AccountController@fcmToken');
+    Route::post('/iban', 'AccountController@storeIban');
 
     Route::post('portraits', 'PortraitController@store');
     Route::resource('favorites', 'FavoriteController');

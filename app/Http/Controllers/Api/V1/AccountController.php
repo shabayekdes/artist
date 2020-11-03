@@ -111,4 +111,21 @@ class AccountController extends Controller
 
         return response()->json(['status' => true, 'data' => $user->wallet], 200);
     }
+        /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function storeIban(Request $request)
+    {
+        $user = auth()->user();
+
+        $user->update([
+            'iban' => $request->get('iban'),
+            'name' => $request->get('name')
+        ]);
+
+        return response()->json(['status' => true, 'message' => 'thanks your iban store successfully'], 200);
+    }
 }
