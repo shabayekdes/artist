@@ -54,7 +54,7 @@ class PortraitController extends Controller
             $data = base64_decode($data);
             Storage::put("public/portraits/".$fileName, $data);
 
-            $thumbnail = '/storage/portraits/'. $fileName;
+            $thumbnail = '/portraits/'. $fileName;
         }
 
         $portrait = Portrait::create([
