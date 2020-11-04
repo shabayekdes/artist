@@ -43,19 +43,16 @@ class PortraitController extends Controller
 
 
         $thumbnail = null;
-        if($request->has('thumbnail') && preg_match('/^data:image\/(\w+);base64,/', $request->get('thumbnail'))){
 
-            $image = $request->get('thumbnail');
+        if($request->has('thumbnail')){
 
-            $fileName = time().'.'.Str::between($request->get('thumbnail'),'data:image/', ';base64');
+            $image = $request->file('thumbnail');
 
-            $data = substr($image, strpos($image, ',') + 1);
-
-            $data = base64_decode($data);
-            Storage::put("public/portraits/".$fileName, $data);
-
-            $thumbnail = '/portraits/'. $fileName;
+            $fileName = time().'.'.$image->getClientOriginalExtension();
+            $image->storeAs('portraits', $fileName,'public');
+            $thumbnail = 'portraits/'. $fileName;
         }
+
 
         $portrait = Portrait::create([
             'name' => $request->get('name'),
