@@ -42,7 +42,8 @@ class CartController extends Controller
             'quantity' => 'required|integer',
             'total' => 'required|integer',
             'portrait_id' => 'required|exists:portraits,id',
-            'attributes' => 'required|array',
+            'size_id' => 'required',
+            'position_id' => 'required'
         ]);
 
         $cart = Cart::where("user_id", auth()->user()->id)->first();
@@ -75,8 +76,9 @@ class CartController extends Controller
                 "total" => $cartProtrait->total + $request->get('total'),
             ]);
         }
+        $attributes = [$request->get('size_id'), $request->get('position_id')];
 
-        $cartProtrait->portraitAttributes()->sync($request->get('attributes'));
+        $cartProtrait->portraitAttributes()->sync($attributes);
     
         return response()->json(['status' => true, 'message' => 'Cart was added!!']);
 

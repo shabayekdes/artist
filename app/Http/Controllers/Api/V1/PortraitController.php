@@ -41,7 +41,6 @@ class PortraitController extends Controller
         // dd($request->all());
         $position = explode(",", $request->get('position'));
 
-
         $thumbnail = null;
 
         if($request->has('thumbnail')){
