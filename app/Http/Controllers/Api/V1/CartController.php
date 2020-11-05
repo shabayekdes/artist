@@ -60,7 +60,9 @@ class CartController extends Controller
         ]);  
 
 
-        $cartProtrait = CartPortrait::where("portrait_id", $request->get('portrait_id'))->first();
+        $cartProtrait = CartPortrait::where("portrait_id", $request->get('portrait_id'))
+                                ->where("cart_id",  $cart->id)
+                                ->first();
 
         if($cartProtrait == null){
             $cartProtrait = CartPortrait::create([
@@ -76,6 +78,7 @@ class CartController extends Controller
                 "total" => $cartProtrait->total + $request->get('total'),
             ]);
         }
+
         $attributes = [$request->get('size_id'), $request->get('position_id')];
 
         $cartProtrait->portraitAttributes()->sync($attributes);
