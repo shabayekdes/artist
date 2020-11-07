@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Resources\OrderResource;
 use App\Models\Cart;
 use App\Models\CartPortrait;
+use App\Models\Portrait;
 
 class CartController extends Controller
 {
@@ -18,7 +19,7 @@ class CartController extends Controller
     public function index()
     {
         $cart = auth()->user()->cart()->first();
-
+       
         if($cart != null){
 
             $cart->load('portraits.portraitAttributes', 'portraits.portrait');
@@ -97,13 +98,20 @@ class CartController extends Controller
     {
 
         $cart = Cart::where("user_id", auth()->user()->id)->first();
+
+        $portrait = Portrait::find($request->get('portrait_id'));
+
         $cartPortrait = CartPortrait::where([
                 ["cart_id", $cart->id],
                 ["portrait_id", $request->get('portrait_id')]
             ])->update([
-                'quantity' => $request->get('quantity')
+                'quantity' => $request->get('quantity'),
+                'total' => $portrait->price * $request->get('quantity')
             ]);
-
+        $grand_total = CartPortrait::where("cart_id", $cart->id)->sum('total');
+        $cart->update([
+            'grand_total' => $grand_total
+        ]);
 
         return response()->json(['status' => true, 'message' => 'Cart has updated'], 200);
     }
@@ -121,4 +129,28 @@ class CartController extends Controller
         return response()->json(['status' => true, 'message' => 'Cart was deleted!!']);
 
     }
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  Cart  $cart
+     * @return \Illuminate\Http\Response
+     */
+    public function destroyPortrait(Request $request)
+    {
+        request()->validate([
+            'cart_id' => 'required|integer',
+            'portrait_id' => 'required|integer',
+        ]);
+
+        $portraitCart = CartPortrait::where('cart_id', $request->get('cart_id'))
+                                        ->where('portrait_id', $request->get('portrait_id'))
+                                        ->first();
+
+        $portraitCart->delete();
+
+        return response()->json(['status' => true, 'message' => 'Portrait was deleted from cart!!']);
+
+    }
+
+    
 }

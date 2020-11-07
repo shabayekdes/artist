@@ -29,8 +29,7 @@ class CheckoutStoreRequest extends FormRequest
             'payment_method' => 'required',
             'payment_status' => 'required',
             'user_address_id' => 'required|exists:user_addresses,id',
-            'details' => 'required',
-            'details.*.attributes' => 'required',
+            'cart_id' => 'required'
         ];
     }
 }

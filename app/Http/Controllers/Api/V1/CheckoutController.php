@@ -2,25 +2,16 @@
 
 namespace App\Http\Controllers\Api\V1;
 
-use App\Http\Controllers\Controller;
 use App\Models\Order;
-use App\Models\OrderProtrait;
-use Illuminate\Http\Request;
-use App\Http\Requests\CheckoutStoreRequest;
 use App\Models\Portrait;
+use App\Models\CartPortrait;
+use Illuminate\Http\Request;
+use App\Models\OrderProtrait;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\CheckoutStoreRequest;
 
 class CheckoutController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
-
     /**
      * Store a newly created resource in storage.
      *
@@ -43,22 +34,26 @@ class CheckoutController extends Controller
             'key' => 'OR' . sprintf('%05u', $order->id)
         ]);
 
-        $details = $request->input('details');
+        $details = CartPortrait::with('portraitAttributes', 'portrait.user')->where("cart_id",  $request->get('cart_id'))
+                                ->get();
+
 
         foreach ($details as $key => $detail) {
+
             $orderProtrait = OrderProtrait::create([
                 "order_id" => $order->id,
-                "portrait_id" => $detail['portrait_id'],
-                "quantity" => $detail['quantity'],
-                "total" => $detail['total'],
-            ]);
-            $portrait = Portrait::find($detail['portrait_id']);
+                "portrait_id" => $detail->portrait_id,
+                "quantity" => $detail->quantity,
+                "total" => $detail->total
+            ]);               
 
-            $artistProfit = ($detail['total'] * $detail['quantity']) * (100 - setting('site.profit')) / 100;
+            $portrait = $detail->portrait;
+
+            $artistProfit = ($detail->total * $detail->quantity) * (100 - setting('site.profit')) / 100;
 
             $portrait->user->update(['wallet' => $artistProfit]);
 
-            $orderProtrait->portraitAttributes()->sync($detail['attributes']);
+            $orderProtrait->portraitAttributes()->sync($detail->portraitAttributes->pluck('attributes.portrait_attribute_id'));
         }
 
         return response()->json(['status' => true, 'message' => 'Order was added!!', 'data' => ['order_id' => $order->key]]);

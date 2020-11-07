@@ -53,6 +53,7 @@ Route::middleware('auth:api')->group(function () {
 
     Route::put('cart', 'CartController@update');
     Route::resource('cart', 'CartController');
+    Route::delete('portrait-cart', 'CartController@destroyPortrait');
 
     Route::delete('portraits/{portrait}', 'PortraitController@destroy');
 
