@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Resources\UserResource;
+use App\Http\Resources\PortraitResource;
 
 class ArtistController extends Controller
 {
@@ -40,14 +41,17 @@ class ArtistController extends Controller
      */
     public function show($id)
     {
-        $artist = User::where(['type' => 3, 'id' => $id])->first();
+        $artist = User::with('portraits')->where(['type' => 3, 'id' => $id])->first();
 
         if($artist == null){
             return response()->json(['status' => false, 'message' => 'Artist not found!!'], 404);
 
         }
 
-        return new UserResource($artist);
+        return [
+            'details' => new UserResource($artist),
+            'portaits' => PortraitResource::collection($artist->portraits)
+        ];
     }
 
     /**

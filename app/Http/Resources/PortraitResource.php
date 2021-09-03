@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Http\Resources\CategoryResource;
 
 class PortraitResource extends JsonResource
 {
@@ -17,17 +18,18 @@ class PortraitResource extends JsonResource
         return [
             "id" => $this->id,
             "name" => $this->name,
-            "sku" => $this->sku,
-            "slug" => $this->slug,
-            "quantity" => $this->quantity,
             "price" => $this->price,
-            "featured" => $this->featured,
             "new" => $this->new,
-            "thumbnail" => url($this->thumbnail),
-            "description" => $this->description,
+            "featured" => $this->featured,
+            "rating" => $this->rating,
+            "thumbnail" => $this->thumbnail != null ? url("storage/" . $this->thumbnail) : null,
+            "description" => $this->description ?? "",
             "status" => $this->status,
-            "category_id" => $this->category,
-            "user_id" => $this->user
+            "category" => $this->category,
+            "artist" => new UserResource($this->user),
+            "size" => $this->attributes->where('type', 'size')->toArray(),
+            "position" => $this->attributes->where('type', 'position')->toArray(),
+
         ];
     }
 }

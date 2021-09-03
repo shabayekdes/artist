@@ -17,7 +17,7 @@ class User extends \TCG\Voyager\Models\User
      * @var array
      */
     protected $fillable = [
-        'name', 'phone', 'password', 'otp', 'rating'
+        'name', 'phone', 'password', 'otp', 'rating', 'email_verified_at', 'avatar', 'fcm_token','type', 'wallet'
     ];
 
     /**
@@ -52,5 +52,37 @@ class User extends \TCG\Voyager\Models\User
     public function addresses()
     {
         return $this->hasMany(UserAddress::class);
+    }
+
+    public function portraits()
+    {
+        return $this->hasMany(Portrait::class);
+    }
+
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
+
+    public function cart()
+    {
+        return $this->hasMany(Cart::class);
+    }
+
+    public function alerts()
+    {
+        return $this->hasMany(Alert::class);
+    }
+
+    public function scopeArtist($query)
+    {
+        return $query->where('type', 3);
+    }
+    /**
+     * The portraits that belong to the user.
+     */
+    public function fav()
+    {
+        return $this->belongsToMany(Portrait::class, 'favorites', 'user_id', 'portrait_id');
     }
 }

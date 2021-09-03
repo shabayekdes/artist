@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers\Api\V1;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Models\Portrait;
+use Illuminate\Support\Str;
+use Illuminate\Http\Request;
+use App\Models\PortraitAttribute;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
 use App\Http\Resources\PortraitResource;
 
 class PortraitController extends Controller
@@ -16,7 +19,14 @@ class PortraitController extends Controller
      */
     public function index()
     {
-        //
+
+        $search = request()->query('search');
+
+        $portraits = Portrait::where('name', 'LIKE', "%{$search}%")
+                    ->orWhere('description', 'LIKE', "%{$search}%")->get();
+
+
+        return response()->json(['status' => true, 'data' => PortraitResource::collection($portraits)]);
     }
 
     /**
@@ -27,7 +37,47 @@ class PortraitController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
+        // dd($request->all());
+        $position = explode(",", $request->get('position'));
+
+        $thumbnail = null;
+
+        if($request->has('thumbnail')){
+
+            $image = $request->file('thumbnail');
+
+            $fileName = time().'.'.$image->getClientOriginalExtension();
+            $image->storeAs('portraits', $fileName,'public');
+            $thumbnail = 'portraits/'. $fileName;
+        }
+
+
+        $portrait = Portrait::create([
+            'name' => $request->get('name'),
+            'price' => $request->get('price'),
+            'thumbnail' => $thumbnail,
+            'description' => $request->get('description'),
+            'category_id' => $request->get('category_id'),
+            'user_id' => auth()->user()->id,
+        ]);
+
+        PortraitAttribute::create([
+            'portrait_id' => $portrait->id,
+            'value' => $request->get('size'),
+            'type' => 'size'
+        ]);
+        
+        foreach ($position as $key => $item) {
+            PortraitAttribute::create([
+                'portrait_id' => $portrait->id,
+                'value' => $item,
+                'type' => 'position'
+            ]);
+        }
+
+        return response()->json(['status' => true, 'message' => 'Portrait was added successfully' ]);
+
     }
 
     /**
@@ -38,7 +88,16 @@ class PortraitController extends Controller
      */
     public function show(Portrait $portrait)
     {
-        return response()->json(['status' => true, 'data' => new PortraitResource($portrait) ]);
+        $portrait->load('attributes');
+
+        $attributes = $portrait->attributes->groupBy('type')->toArray();
+
+        $data = [
+            'portait' => new PortraitResource($portrait),
+            'size' => isset($attributes['size']) ? $attributes['size'] : [],
+            'position' => isset($attributes['position']) ? $attributes['position'] : []
+        ];
+        return response()->json(['status' => true, 'data' => $data ]);
     }
 
     /**
@@ -59,8 +118,12 @@ class PortraitController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Portrait $portrait)
     {
-        //
+        abort_if($portrait->user_id != auth()->user()->id, 401, "You not have this permission to delete portrait");
+        $portrait->delete();
+
+        return response()->json(['status' => true, 'message' => 'Portrait was deleted successfully' ]);
+
     }
 }

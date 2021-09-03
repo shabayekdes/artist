@@ -16,7 +16,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $categories = Category::all();
+        $categories = Category::with('portraits.attributes')->get();
 
         $data = [
             'list_categories' => CategoryResource::collection($categories)
@@ -44,6 +44,8 @@ class CategoryController extends Controller
      */
     public function show(Category $category)
     {
+        $category->load('portraits.user');
+
         return response()->json(['status' => true, 'data' => new CategoryResource($category) ]);
     }
 

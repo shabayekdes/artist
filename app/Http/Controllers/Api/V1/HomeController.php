@@ -17,11 +17,12 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $featured = Portrait::feature()->get();
+        $featured = Portrait::with('attributes')->feature()->get();
+        $new = Portrait::with('attributes')->orderBy('id', 'desc')->latest()->get();
 
         $data = [
-            'most_seller' =>  PortraitResource::collection($featured),
-            'feature_products' => PortraitResource::collection($featured),
+            'lastest' =>  PortraitResource::collection($new),
+            'feature' => PortraitResource::collection($featured),
         ];
 
         return response()->json(['status' => true, 'data' => $data]);

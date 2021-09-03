@@ -12,4 +12,12 @@ class Category extends Model
      * @var array
      */
     protected $guarded = [];
+
+    /**
+     * Get the user that owns the attributes.
+     */
+    public function portraits()
+    {
+        return $this->hasMany(Portrait::class);
+    }
 }

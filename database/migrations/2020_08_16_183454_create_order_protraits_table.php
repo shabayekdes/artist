@@ -15,6 +15,10 @@ class CreateOrderProtraitsTable extends Migration
     {
         Schema::create('order_protraits', function (Blueprint $table) {
             $table->id();
+            $table->unsignedInteger('quantity')->default(1);
+            $table->decimal('total', 12, 4)->nullable();
+            $table->foreignId('order_id')->references('id')->on('orders')->onDelete('cascade');
+            $table->foreignId('portrait_id')->references('id')->on('portraits')->onDelete('cascade');
             $table->timestamps();
         });
     }

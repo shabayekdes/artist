@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\UserAddress;
 use Illuminate\Http\Request;
 use App\Http\Requests\UserAddressStoreRequest;
+use App\Http\Resources\UserAddressResource;
 
 class UserAddressController extends Controller
 {
@@ -22,7 +23,7 @@ class UserAddressController extends Controller
             return response()->json(['status' => false, 'message' => 'Sorry, don\'t have any addresses'], 404);
         }
 
-        return UserAddress::collection($addresses);
+        return UserAddressResource::collection($addresses);
     }
 
     /**
@@ -33,6 +34,7 @@ class UserAddressController extends Controller
      */
     public function store(UserAddressStoreRequest $request)
     {
+        
         $data = auth()->user()->addresses()->create($request->all());
 
         return response()->json(['status' => true, 'message' => 'Address was added!!']);
@@ -59,7 +61,12 @@ class UserAddressController extends Controller
      */
     public function update(Request $request, UserAddress $userAddress)
     {
-        $userAddress->update($request->all());
+        if(auth()->user()->id != $userAddress->user_id){
+            return response()->json(['status' => false, 'message' => 'Not found address']);
+
+        }
+        
+        $userAddress->update($request->only(['address', 'address2', 'region', 'city', 'country']));
 
         return response()->json(['status' => true, 'message' => 'Address was updated!!']);
 

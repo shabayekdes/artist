@@ -14,6 +14,31 @@ class CategoryResource extends JsonResource
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        $portraits = $this->portraits != null ?$this->portraits->map(function($item, $key){
+
+            return [        
+
+                "id" => $item->id,
+                "name" => $item->name,
+                "price" => $item->price,
+                "new" => $item->new,
+                "featured" => $item->featured,
+                "rating" => $item->rating,
+                "thumbnail" => url("storage/" . $item->thumbnail),
+                "description" => $item->description ?? "",
+                "status" => $item->status,
+                "artist" => new UserResource($item->user),
+                "size" => $item->attributes->where('type', 'size')->values(),
+                "position" => $item->attributes->where('type', 'position')->values(),
+            ];
+        }) : [];
+
+        return [
+            "id" => $this->id,
+            "name"=> $this->name,
+            "description"=> $this->description ?? "",  
+            "image"=> url("storage/" .$this->image),
+            "portraits" => $portraits
+        ];
     }
 }

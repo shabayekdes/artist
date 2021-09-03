@@ -21,7 +21,7 @@ class UserResource extends JsonResource
             "avatar" => url($this->avatar),
             "type" => $this->type,
             "rating" => $this->rating,
-            "description" => $this->description,
+            "description" => $this->description ?? "",
         ];
     }
 }

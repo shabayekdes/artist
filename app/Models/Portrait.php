@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class Portrait extends Model
 {
@@ -21,7 +22,9 @@ class Portrait extends Model
     protected $casts = [
         'featured' => 'boolean',
         'new' => 'boolean',
-        'price' => 'float'
+        'price' => 'float',
+        'rating' => 'float',
+        'status' => 'boolean'
     ];
 
     /**
@@ -33,6 +36,17 @@ class Portrait extends Model
     public function scopeFeature($query)
     {
         return $query->where('featured', true);
+    }
+
+    /**
+     * Scope a query to only include feature portraits.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeNew($query)
+    {
+        return $query->where('new', true);
     }
 
     /**
@@ -49,5 +63,28 @@ class Portrait extends Model
     public function category()
     {
         return $this->belongsTo(Category::class);
+    }
+
+    /**
+     * Get the user that owns the attributes.
+     */
+    public function attributes()
+    {
+        return $this->hasMany(PortraitAttribute::class);
+    }
+
+        /**
+     * The "booted" method of the model.
+     *
+     * @return void
+     */
+    protected static function booted()
+    {
+        static::deleting(function ($portrait) {
+            $exists = Storage::exists($portrait->thumbnail);
+            if($exists){
+                Storage::delete($portrait->thumbnail);
+            }
+        });
     }
 }
